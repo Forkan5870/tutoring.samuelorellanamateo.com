@@ -1,0 +1,20 @@
+{
+    "personalInfo": {
+      "name": "John Doe",
+      "course": "Mathematics",
+      "rate": 30
+    },
+    "sessionsToPay": [
+      { "id": 1, "date": "2024-03-20", "time": "10:00 AM", "price": 50 },
+      { "id": 2, "date": "2024-03-25", "time": "2:00 PM", "price": 60 }
+    ],
+    "sessionsPortal": {
+      "meetLink": "https://meet.link",
+      "whiteboardLink": "https://whiteboard.link",
+      "pdfs": [
+        { "id": 1, "name": "Session 1 Notes", "url": "https://pdf-link-1.pdf" },
+        { "id": 2, "name": "Session 2 Notes", "url": "https://pdf-link-2.pdf" }
+      ]
+    }
+  }
+  
