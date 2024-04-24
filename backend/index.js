@@ -72,6 +72,24 @@ app.post('/api/students/clear', async (req, res) => {
 });
 
 
+app.post('/', (req, res) => {
+    res.send('This is a post request!');
+});
+
+const start = async () => {
+    try{
+        await mongoose.connect(CONNECTION);
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+start();
+
 
 // a partir de aqui es tutorial
 
@@ -88,6 +106,10 @@ app.post('/api/students/clear', async (req, res) => {
 //     }
 // });
 
+// app.get('/', (req, res) => {
+//     res.send(student);
+// });
+
 // app.get('/api/students', async (req, res) => {
 //     // console.log(await mongoose.connection.db.listCollections().toArray());
 //     try {
@@ -98,6 +120,8 @@ app.post('/api/students/clear', async (req, res) => {
 //         res.status(500).json({error : error.message});
 //     }
 // });
+
+
 
 // app.delete('/api/students/:id', async (req, res) => {
 //     try{
@@ -134,23 +158,7 @@ app.post('/api/students/clear', async (req, res) => {
 //     }
 // });
 
-// app.post('/', (req, res) => {
-//     res.send('This is a post request!');
-// });
 
-const start = async () => {
-    try{
-        await mongoose.connect(CONNECTION);
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
-        });
-    }
-    catch(error){
-        console.log(error);
-    }
-}
-
-start();
 
 
 // string: mongodb+srv://my_user:<password>@tutoringcluset.rho3dk2.mongodb.net/
