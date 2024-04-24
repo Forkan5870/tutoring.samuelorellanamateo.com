@@ -22,7 +22,7 @@ function StudentPortal() {
     }
   };
     fetchData();
-  }, []);
+  }, [studentId]);
 
   useEffect(() => {
     if (student) {

@@ -6,7 +6,7 @@ import StudentList from './pages/StudentList';
 import Loading from './components/Loading';
 
 import { useEffect } from "react"
-import { BrowserRouter as Router, Route, Routes, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 
 function App() {
