@@ -9,6 +9,13 @@ function StudentPortal() {
   const [paidSessions, setPaidSessions] = useState([]);
   const [unpaidSessions, setUnpaidSessions] = useState([]);
 
+  const defaultFormData = () => ({
+    studentId: '',
+    sessionId: '',
+    status: '',
+  });
+
+  const [formData, setFormData] = useState(defaultFormData);
 
   useEffect(() => {
   const fetchData = async () => {
@@ -40,13 +47,32 @@ function StudentPortal() {
   };
 
   const onSelectDate = (event) => {}
-  const onSubmit = (event) => {}
-
-
+  
+  const onSubmit = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      
+      const response = await fetch('http://localhost:8000/api/upload', {
+        method: 'POST',
+        body: formData
+      });
+  
+      if (response.ok) {
+        console.log('File uploaded successfully');
+      } else {
+        console.error('Failed to upload file');
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
+  
   return (
     <div>
       {student ? (
         <div>
+
           <div className="p-4">
             <h2 className="text-xl font-bold mb-2">Personal Information</h2>
             <p className="text-base mb-1">Name: {student.name}</p>

@@ -1,7 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Student = require('./student');
+const Request = require('./request');
 const cors = require('cors');
+
+const multer = require('multer');
 
 const dotenv = require('dotenv');
 dotenv.config({ path: '../.env' });
@@ -75,6 +78,28 @@ app.post('/api/students/clear', async (req, res) => {
 app.post('/', (req, res) => {
     res.send('This is a post request!');
 });
+
+
+// STORAGE
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
+
+const upload = multer({ storage: storage });
+
+app.post('/api/upload', upload.single('file'), (req, res) => {
+    res.json(req.file);
+});
+
+
+
+// FIN DEL BACKEND, NO TOCAR
 
 const start = async () => {
     try{
