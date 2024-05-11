@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+
 function CreateStudent() {
 
     const defaultFormData = () => ({
@@ -12,7 +13,6 @@ function CreateStudent() {
         sessions: []
     });
     
-
     const [formData, setFormData] = useState(defaultFormData);
 
     const handleChange = (event, index) => {
@@ -64,12 +64,9 @@ function CreateStudent() {
                 body: JSON.stringify(formData)
             });
             if (response.ok) {
-                // Student created successfully
                 console.log('Student created successfully');
-                // Reset form data to default values
                 setFormData(defaultFormData);
             } else {
-                // Error in creating student
                 console.error('Error creating student:', response.statusText);
             }
         } catch (error) {
@@ -82,9 +79,7 @@ function CreateStudent() {
 
         <div className="max-w-md mx-auto mt-8 p-4 bg-gray-100 rounded-lg">
 
-            
             <pre>{JSON.stringify(formData, null, 2)}</pre>
-
 
             <form onSubmit={handleSubmit}>
 
@@ -155,7 +150,9 @@ function CreateStudent() {
 
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4" type="button" onClick={addSession}>Add Session</button>
                 <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4" type="submit" onClick={handleSubmit}>Submit</button>
+
             </form>
+
         </div>
     );
 }
