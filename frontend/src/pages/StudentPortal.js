@@ -4,10 +4,11 @@ import { useParams } from 'react-router-dom'; // Import useParams from react-rou
 
 function StudentPortal() {
 
-  const { studentId } = useParams(); // Get the studentId from route parameters
+  const { studentId } = useParams();
   const [student, setStudent] = useState(null);
-  const [paidSessions, setPaidSessions] = useState([]);
+  const [upcomingSessions, setUpcomingSessions] = useState([]); 
   const [unpaidSessions, setUnpaidSessions] = useState([]);
+  const [paidSessions, setPaidSessions] = useState([]);
 
   const defaultFormData = () => ({
     studentId: '',
@@ -33,10 +34,12 @@ function StudentPortal() {
 
   useEffect(() => {
     if (student) {
-      const paidFilter = student.sessions.filter(session => session.paid);
-      const unpaidFilder = student.sessions.filter(session => !session.paid);
-      setPaidSessions(paidFilter);
+      const upcomingFilter = student.sessions.filter(session => !session.taken);
+      const unpaidFilder = student.sessions.filter(session => session.taken && !session.paid);
+      const paidFilter = student.sessions.filter(session => session.taken && session.paid);
+      setUpcomingSessions(upcomingFilter);
       setUnpaidSessions(unpaidFilder);
+      setPaidSessions(paidFilter);
     }
   }, [student]);
   
@@ -101,29 +104,24 @@ function StudentPortal() {
               </a>
             </div>
           </div>
-          
-          {paidSessions ? (
+
+          {upcomingSessions ? (
             <div className="p-4">
-              <h3 className="text-lg font-bold mb-2">PDFs from Previous Sessions</h3>
-              <ul>
-                {paidSessions.map(session => (
-                  <li key={session._id} className="mb-2">
-                    <a
-                      href={session.pdf}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 hover:text-blue-700"
-                    >
-                      {session.date}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <h2 className="text-xl font-bold mb-2">Upcoming Sessions</h2>
+              <div>
+                <ul className="mb-2">
+                  {upcomingSessions.map(session => (
+                    <li key={session.id} className="text-base">
+                      Date: {session.date} - Time: {session.time} - Price: {session.price}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-            ) : (
-            <p>No paid sessions</p>
-          )
-          }
+          ) : (
+            <p>No upcoming sessions</p>
+          )}
+
 
           {unpaidSessions ? (
             <div className="p-4">
@@ -172,6 +170,29 @@ function StudentPortal() {
           ) : (
             <p>No sessions to pay</p>
           )}
+          
+          {paidSessions ? (
+            <div className="p-4">
+              <h3 className="text-lg font-bold mb-2">PDFs from Previous Sessions</h3>
+              <ul>
+                {paidSessions.map(session => (
+                  <li key={session._id} className="mb-2">
+                    <a
+                      href={session.pdf}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:text-blue-700"
+                    >
+                      {session.date}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            ) : (
+            <p>No paid sessions</p>
+          )
+          }
 
         </div>
       ) : (

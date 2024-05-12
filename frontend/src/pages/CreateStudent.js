@@ -18,7 +18,7 @@ function CreateStudent() {
     const handleChange = (event, index) => {
         const eventName = event.target.name;
         const eventValue = event.target.value;
-        if (eventName === 'paid') {
+        if (eventName === 'taken' || eventName === 'paid') {
             const newSessions = [...formData.sessions];
             newSessions[index][eventName] = event.target.checked;
             setFormData({ ...formData, sessions: newSessions });
@@ -42,6 +42,7 @@ function CreateStudent() {
                 date: '',
                 price: '',
                 pdf: 'example.com/pdf',
+                taken: false,
                 paid: false
             }
             ]
@@ -137,6 +138,12 @@ function CreateStudent() {
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={`pdf_${index}`}>PDF URL</label>
                         <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id={`pdf_${index}`} type="text" placeholder="PDF URL" name="pdf" value={session.pdf} onChange={(e) => handleChange(e, index)} required />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={`taken_${index}`}>
+                        <input type="checkbox" id={`taken_${index}`} name="taken" checked={session.taken} onChange={(e) => handleChange(e, index)} />
+                        <span className="ml-2">Taken</span>
+                        </label>
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={`paid_${index}`}>

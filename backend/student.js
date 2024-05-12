@@ -12,6 +12,10 @@ const sessionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    taken: {
+        type: Boolean,
+        required: true
+    },
     paid: {
         type: Boolean,
         required: true
