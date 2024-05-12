@@ -1,8 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Student = require('./student');
-const Request = require('./request');
+const Payment = require('./payment');
 const cors = require('cors');
+
+const path = require('path');
+const fs = require('fs').promises;
 
 const multer = require('multer');
 
@@ -41,7 +44,7 @@ app.get('/api/students/:id', async (req, res) => { // could do /api/students/:id
     try{
         const studentId = req.params.id;
         const student = await Student.findById(studentId);
-        console.log(student);
+        // console.log(student);
         if (!student) {
             res.status(404).json({ error: "Student not found" });
         }
@@ -83,21 +86,35 @@ app.post('/', (req, res) => {
 // STORAGE
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/');
+    destination: async function (req, file, cb) {
+        const studentId = req.body.studentId;
+        const directory = path.join('uploads', studentId);
+        await fs.mkdir(directory, { recursive: true });
+        cb(null, directory);
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname);
+        const sessionId = req.body.sessionId;
+        cb(null, sessionId + path.extname(file.originalname));
     }
 });
 
 const upload = multer({ storage: storage });
 
-app.post('/api/upload', upload.single('file'), (req, res) => {
-    res.json(req.file);
+
+app.post('/api/payment/upload', upload.single('file'), async (req, res) => {
+    try {
+        const { studentId, sessionId } = req.body;
+        const payment = new Payment({
+            studentId,
+            sessionId
+        });
+        await payment.save();
+        res.status(200).send('File uploaded and payment created successfully');
+    } catch (error) {
+        console.error('Error uploading file and creating payment:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
-
-
 
 // FIN DEL BACKEND, NO TOCAR
 

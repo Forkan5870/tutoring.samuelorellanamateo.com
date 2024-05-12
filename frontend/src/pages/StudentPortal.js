@@ -9,14 +9,8 @@ function StudentPortal() {
   const [upcomingSessions, setUpcomingSessions] = useState([]); 
   const [unpaidSessions, setUnpaidSessions] = useState([]);
   const [paidSessions, setPaidSessions] = useState([]);
-
-  const defaultFormData = () => ({
-    studentId: '',
-    sessionId: '',
-    status: '',
-  });
-
-  const [formData, setFormData] = useState(defaultFormData);
+  
+  const [selectedSessionId, setSelectedSessionId] = useState(null); 
 
   useEffect(() => {
   const fetchData = async () => {
@@ -49,19 +43,26 @@ function StudentPortal() {
     setSelectedFile(event.target.files[0]);
   };
 
-  const onSelectDate = (event) => {}
-  
+
+  const onSelectSession = (event) => {
+    setSelectedSessionId(event.target.value); 
+  };
+
   const onSubmit = async () => {
     try {
       const formData = new FormData();
+      formData.append('studentId', studentId); 
+      formData.append('sessionId', selectedSessionId);
       formData.append('file', selectedFile);
-      
-      const response = await fetch('http://localhost:8000/api/upload', {
+  
+      const response = await fetch('http://localhost:8000/api/payment/upload', {
         method: 'POST',
         body: formData
       });
   
       if (response.ok) {
+        const data = await response.text();
+        console.log(data); // File uploaded and payment created successfully  
         console.log('File uploaded successfully');
       } else {
         console.error('Failed to upload file');
@@ -70,6 +71,7 @@ function StudentPortal() {
       console.error('Error uploading file:', error);
     }
   };
+  
   
   return (
     <div>
@@ -151,11 +153,11 @@ function StudentPortal() {
                   <div className="flex items-center mb-4">
                     <select
                       className="border border-black rounded-md py-2 px-3 mr-2"
-                      onChange={onSelectDate}
+                      onChange={onSelectSession}
                     >
                       <option value="">Select Session</option>
                       {unpaidSessions.map(session => (
-                        <option key={session.id} value={session.date}>{session.date}</option>
+                        <option key={session._id} value={session._id}>{session.date} and {session._id}</option>
                       ))}
                     </select>
                     <button
@@ -165,6 +167,7 @@ function StudentPortal() {
                       Submit
                     </button>
                   </div>
+                  {selectedSessionId}
                 </div>
             </div>
           ) : (
