@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const Student = require('./student');
 const Payment = require('./payment');
 const cors = require('cors');
-
 const path = require('path');
 const fs = require('fs').promises;
+const cookieParser = require('cookie-parser');
 
 const multer = require('multer');
 
@@ -18,6 +18,7 @@ mongoose.set('strictQuery', false);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 const PORT = process.env.PORT || 8000;
 const CONNECTION = process.env.CONNECTION;
@@ -116,6 +117,27 @@ app.post('/api/payment/upload', upload.single('file'), async (req, res) => {
     }
 });
 
+
+// COOKIES
+
+app.post('/api/cookies/create', (req, res) => {
+    const value = req.query.cookie;
+    console.log('Cookie value:', value);
+
+    if (!value) {
+        return res.status(400).send('Cookie value is required');
+    }
+
+    res.cookie('studentId', value, { httpOnly: true }); // secure: true for https (production)
+
+    res.status(200).send('Cookie created successfully, with value: ' + value);
+});
+
+app.get('/api/cookies/read', (req, res) => {
+    res.send('Cookie value: ' + JSON.stringify(req.cookies));
+});
+
+
 // FIN DEL BACKEND, NO TOCAR
 
 const start = async () => {
@@ -131,87 +153,6 @@ const start = async () => {
 }
 
 start();
-
-
-// a partir de aqui es tutorial
-
-  
-
-// app.post('/students', async (req, res) => {
-//     try {
-//       const students = req.body.students;
-//       await Student.insertMany(students);
-//       res.status(201).send('Students added successfully');
-//     } catch (error) {
-//       console.error('Error adding students:', error);
-//       res.status(500).send('Internal Server Error');
-//     }
-// });
-
-// app.get('/', (req, res) => {
-//     res.send(student);
-// });
-
-// app.get('/api/students', async (req, res) => {
-//     // console.log(await mongoose.connection.db.listCollections().toArray());
-//     try {
-//         const result = await Student.find();
-//         res.send({"data" : result});
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).json({error : error.message});
-//     }
-// });
-
-
-
-// app.delete('/api/students/:id', async (req, res) => {
-//     try{
-//         const studentId = req.params.id;
-//         const result = await Student.deleteOne({ _id: studentId });
-//         res.json({ deletedCount: result.deletedCount });
-//     }
-//     catch(error){
-//         res.status(500).json({ error: "Something went wrong" });
-//     }
-// });
-
-// app.put('/api/students/:id', async (req, res) => {
-//     try{
-//         const studentId = req.params.id;
-//         const result = await Student.replaceOne({ _id: studentId }, req.body);
-//         console.log(result);
-//         res.json({ updatedCount: result.modifiedCount });
-//     }
-//     catch(error){
-//         res.status(500).json({ error: "Something went wrong" });
-//     }
-// });
-
-// app.post('/api/students', async (req, res) => {
-//     console.log(req.body);
-//     const student = new Student(req.body);
-//     try {
-//         await student.save();
-//         res.status(201).json({ student });
-//     } catch (error) {
-//         console.log(error);
-//         res.status(400).json({ error: error.message });
-//     }
-// });
-
-
-
-
-// string: mongodb+srv://my_user:<password>@tutoringcluset.rho3dk2.mongodb.net/
-
-// post for adding a resource, new student
-// put for updating a student
-
-// rule: if something done 10 times doesnt change is a put, if it changes is a post
-
-
-
 
 
 // ---------------------------------------------------------------

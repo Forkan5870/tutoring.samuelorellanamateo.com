@@ -157,7 +157,7 @@ function StudentPortal() {
                     >
                       <option value="">Select Session</option>
                       {unpaidSessions.map(session => (
-                        <option key={session._id} value={session._id}>{session.date} and {session._id}</option>
+                        <option key={session._id} value={session._id}>{session.date}</option>
                       ))}
                     </select>
                     <button
