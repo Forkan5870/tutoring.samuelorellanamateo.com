@@ -8,7 +8,7 @@ This repository is a project I am working on to learn more about React and Node.
 
 ### Frontend (React)
 
-In the project directory, you can run:
+If you navigate to `\frontend`, you can run:
 
 #### `npm start`
 
@@ -21,14 +21,12 @@ Check the file `\src\App.js` to see the routes.
 
 ### Backend (Node.js)
 
-If you navigate to `\server`, you can run:
+If you navigate to `\backend`, you can run:
 
 #### `npm run dev`
 
 This command runs the server in the development mode.
 Open [http://localhost:8000](http://localhost:8000) to view it in your browser.
-
-I am aware that the server should not be inside the frontend, but I did it this way because I learned React first and then Node.js. I will change this in the future.
 
 ## .env File
 
