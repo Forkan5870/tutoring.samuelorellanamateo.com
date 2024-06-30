@@ -4,8 +4,8 @@ import CreateStudent from './pages/CreateStudent';
 import NotFoundPage from './pages/NotFoundPage';
 import StudentList from './pages/StudentList';
 
+import Home from './pages/Home';
 import Loading from './components/Loading';
-import CreateCookie from './components/CreateCookie';
 
 import { useEffect } from "react"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -16,12 +16,12 @@ function App() {
     <div>
       <Router>
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/loading" element={<Loading />} />
           <Route path="/create" element={<CreateStudent />} />
           <Route path="/list" element={<StudentList />} />
           <Route path="/portal/:studentId" element={<StudentPortal />} />
           <Route path="/reddit" element={<RedirectToReddit />} />
-          <Route path="/create-cookie" element={<CreateCookie />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>

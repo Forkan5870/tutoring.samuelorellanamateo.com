@@ -5,7 +5,6 @@ const Payment = require('./payment');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs').promises;
-const cookieParser = require('cookie-parser');
 
 const multer = require('multer');
 
@@ -18,10 +17,10 @@ mongoose.set('strictQuery', false);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 
 const PORT = process.env.PORT || 8000;
 const CONNECTION = process.env.CONNECTION;
+
 
 app.get('/api/students/all', async (req, res) => {
     try {
@@ -120,22 +119,22 @@ app.post('/api/payment/upload', upload.single('file'), async (req, res) => {
 
 // COOKIES
 
-app.post('/api/cookies/create', (req, res) => {
-    const value = req.query.cookie;
-    console.log('Cookie value:', value);
+// app.post('/api/cookies/create', (req, res) => {
+//     const value = req.query.cookie;
+//     console.log('Cookie value:', value);
 
-    if (!value) {
-        return res.status(400).send('Cookie value is required');
-    }
+//     if (!value) {
+//         return res.status(400).send('Cookie value is required');
+//     }
 
-    res.cookie('studentId', value, { httpOnly: true }); // secure: true for https (production)
+//     res.cookie('studentId', value, { httpOnly: true }); // secure: true for https (production)
 
-    res.status(200).send('Cookie created successfully, with value: ' + value);
-});
+//     res.status(200).send('Cookie created successfully, with value: ' + value);
+// });
 
-app.get('/api/cookies/read', (req, res) => {
-    res.send('Cookie value: ' + JSON.stringify(req.cookies));
-});
+// app.get('/api/cookies/read', (req, res) => {
+//     res.send('Cookie value: ' + JSON.stringify(req.cookies));
+// });
 
 
 // FIN DEL BACKEND, NO TOCAR

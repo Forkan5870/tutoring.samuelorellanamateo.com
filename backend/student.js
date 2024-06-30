@@ -8,16 +8,21 @@ const sessionSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    pdf: {
+    status: {
         type: String,
-        required: true
-    },
-    taken: {
-        type: Boolean,
-        required: true
+        required: true,
+        enum: ['requested', 'booked', 'taken']    
     },
     paid: {
         type: Boolean,
+        required: true
+    },
+    notes: {
+        type: String,
+        required: true
+    },
+    confirmation: {
+        type: String,
         required: true
     }
 });
@@ -37,7 +42,8 @@ const studentSchema = new mongoose.Schema({
     },
     currency: {
         type: String,
-        required: true
+        required: true,
+        enum: ['e', 's']
     },
     meetLink: {
         type: String,
